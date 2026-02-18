@@ -6,7 +6,7 @@ A GitHub Actions pipeline that queries Snowflake for the previous week's member 
 
 ## How it works
 
-1. **Query** — `main.py` connects to Snowflake using key-pair authentication and runs a CTE query against `ANALYTICS_DEV.RAW__JOTFORM_VIEW.SUBMISSIONS`. It flattens JotForm submission answers, pivots them into one row per submission, applies consent filtering (`consent_to_share = TRUE`), and joins against `ANALYTICS_DEV.ANALYTICS_CORE.DIM__COACHES` to resolve each coach's email address.
+1. **Query** — `main.py` connects to Snowflake using key-pair authentication and runs a CTE query against `ANALYTICS_PROD.RAW__JOTFORM_VIEW.SUBMISSIONS`. It flattens JotForm submission answers, pivots them into one row per submission, applies consent filtering (`consent_to_share = TRUE`), and joins against `ANALYTICS_PROD.ANALYTICS_CORE.DIM__COACHES` to resolve each coach's email address.
 
 2. **Group** — Results are grouped by coach. For each coach, the script computes the total response count and average rating.
 
@@ -55,7 +55,7 @@ A GitHub Actions pipeline that queries Snowflake for the previous week's member 
 
 | Name | Default | Description |
 |---|---|---|
-| `SNOWFLAKE_DATABASE` | `ANALYTICS_DEV` | Snowflake database |
+| `SNOWFLAKE_DATABASE` | `ANALYTICS_PROD` | Snowflake database |
 | `SMTP_SERVER` | `smtp.gmail.com` | SMTP hostname |
 | `SMTP_PORT` | `587` | SMTP port |
 | `EMAIL_FROM` | Same as `SMTP_USER` | From address if different from sending account |

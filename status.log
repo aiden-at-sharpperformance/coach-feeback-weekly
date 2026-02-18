@@ -1,0 +1,88 @@
+2026-02-18 10:36:40,839 - __main__ - INFO - TEST MODE — coach: 'Steven Bunting', sending to: aiden@sharpperformance.tech
+2026-02-18 10:36:41,758 - __main__ - INFO - Executing feedback query (week_offset=0, coach=Steven Bunting)…
+2026-02-18 10:37:29,949 - __main__ - INFO - TEST MODE — coach: 'Steven Bunting', sending to: aiden@sharpperformance.tech
+2026-02-18 10:37:30,398 - __main__ - INFO - Executing feedback query (week_offset=0, coach=Steven Bunting)…
+2026-02-18 10:37:32,255 - __main__ - INFO - Fetched 0 consented feedback rows.
+2026-02-18 10:37:32,420 - __main__ - INFO - No consented feedback found for this week for coach: Steven Bunting. No emails sent.
+2026-02-18 10:40:27,057 - __main__ - INFO - TEST MODE — coach: 'Chanda Cabin', sending to: aiden@sharpperformance.tech
+2026-02-18 10:40:27,552 - __main__ - INFO - Executing feedback query (week_offset=0, coach=Chanda Cabin)…
+2026-02-18 10:40:28,631 - __main__ - INFO - Fetched 0 consented feedback rows.
+2026-02-18 10:40:28,805 - __main__ - INFO - No consented feedback found for this week for coach: Chanda Cabin. No emails sent.
+2026-02-18 10:40:53,147 - __main__ - INFO - TEST MODE — coach: 'Brendan Dowling', sending to: aiden@sharpperformance.tech
+2026-02-18 10:40:53,648 - __main__ - INFO - Executing feedback query (week_offset=0, coach=Brendan Dowling)…
+2026-02-18 10:40:54,752 - __main__ - INFO - Fetched 0 consented feedback rows.
+2026-02-18 10:40:54,886 - __main__ - INFO - No consented feedback found for this week for coach: Brendan Dowling. No emails sent.
+2026-02-18 10:45:23,686 - __main__ - INFO - TEST MODE — coach: 'Brendan Dowling', sending to: aiden@sharpperformance.tech
+2026-02-18 10:45:24,172 - __main__ - INFO - Executing feedback query (week_offset=0, coach=Brendan Dowling)…
+2026-02-18 10:45:25,355 - __main__ - INFO - Fetched 1 consented feedback rows.
+2026-02-18 10:45:26,413 - __main__ - ERROR - Failed to process/send report for Brendan Dowling: {'': (555, b'5.5.2 Syntax error, cannot decode response. For more information, go to\n5.5.2  https://support.google.com/a/answer/3221692 and review RFC 5321\n5.5.2 specifications. 46e09a7af769-7d4a75309bcsm18456134a34.1 - gsmtp')}
+Traceback (most recent call last):
+  File "/Users/aidenramirez/Desktop/coach-feedback-weekly/main.py", line 308, in <module>
+    send_email(
+    ~~~~~~~~~~^
+        to_email=to_email,
+        ^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        html_body=html,
+        ^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/aidenramirez/Desktop/coach-feedback-weekly/main.py", line 239, in send_email
+    smtp.send_message(msg)
+    ~~~~~~~~~~~~~~~~~^^^^^
+  File "/opt/anaconda3/lib/python3.13/smtplib.py", line 989, in send_message
+    return self.sendmail(from_addr, to_addrs, flatmsg, mail_options,
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                         rcpt_options)
+                         ^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.13/smtplib.py", line 904, in sendmail
+    raise SMTPRecipientsRefused(senderrs)
+smtplib.SMTPRecipientsRefused: {'': (555, b'5.5.2 Syntax error, cannot decode response. For more information, go to\n5.5.2  https://support.google.com/a/answer/3221692 and review RFC 5321\n5.5.2 specifications. 46e09a7af769-7d4a75309bcsm18456134a34.1 - gsmtp')}
+2026-02-18 10:45:26,416 - __main__ - ERROR - Finished with errors for coaches: ['Brendan Dowling']
+2026-02-18 10:46:35,281 - __main__ - INFO - TEST MODE — coach: 'Brendan Dowling', sending to: aiden@sharpperformance.tech
+2026-02-18 10:46:35,803 - __main__ - INFO - Executing feedback query (week_offset=0, coach=Brendan Dowling)…
+2026-02-18 10:46:36,558 - __main__ - INFO - Fetched 1 consented feedback rows.
+2026-02-18 10:46:38,453 - __main__ - INFO - Email sent to aiden@sharpperformance.tech
+2026-02-18 10:46:38,453 - __main__ - INFO - All done. Reports sent to 1 coach(es).
+2026-02-18 10:55:22,226 - __main__ - INFO - TEST MODE — coach: 'Megan O'Connor', sending to: anna@sharpperformance.com
+2026-02-18 10:55:22,668 - __main__ - INFO - Executing feedback query (week_offset=0, coach=Megan O'Connor)…
+2026-02-18 10:55:24,179 - __main__ - INFO - Fetched 0 consented feedback rows.
+2026-02-18 10:55:24,404 - __main__ - INFO - No consented feedback found for this week for coach: Megan O'Connor. No emails sent.
+2026-02-18 10:55:48,149 - __main__ - INFO - TEST MODE — coach: 'Megan O'Connor', sending to: anna@sharpperformance.com
+2026-02-18 10:55:48,761 - __main__ - INFO - Executing feedback query (week_offset=0, coach=Megan O'Connor)…
+2026-02-18 10:55:49,105 - __main__ - INFO - Fetched 0 consented feedback rows.
+2026-02-18 10:55:49,241 - __main__ - INFO - No consented feedback found for this week for coach: Megan O'Connor. No emails sent.
+2026-02-18 10:56:22,013 - __main__ - INFO - TEST MODE — coach: 'Brendan Dowling', sending to: anna@sharpperformance.com
+2026-02-18 10:56:22,684 - __main__ - INFO - Executing feedback query (week_offset=0, coach=Brendan Dowling)…
+2026-02-18 10:56:23,207 - __main__ - INFO - Fetched 1 consented feedback rows.
+2026-02-18 10:56:24,989 - __main__ - INFO - Email sent to anna@sharpperformance.com
+2026-02-18 10:56:24,990 - __main__ - INFO - All done. Reports sent to 1 coach(es).
+2026-02-18 10:57:04,848 - __main__ - INFO - TEST MODE — coach: 'Bobby Wade', sending to: anna@sharpperformance.com
+2026-02-18 10:57:05,331 - __main__ - INFO - Executing feedback query (week_offset=0, coach=Bobby Wade)…
+2026-02-18 10:57:06,482 - __main__ - INFO - Fetched 1 consented feedback rows.
+2026-02-18 10:57:07,796 - __main__ - INFO - Email sent to anna@sharpperformance.com
+2026-02-18 10:57:07,797 - __main__ - INFO - All done. Reports sent to 1 coach(es).
+2026-02-18 10:58:12,974 - __main__ - INFO - TEST MODE — coach: 'Bobby Wade', sending to: aiden@sharpperformance.com
+2026-02-18 10:58:13,456 - __main__ - INFO - Executing feedback query (week_offset=0, coach=Bobby Wade)…
+2026-02-18 10:58:14,068 - __main__ - INFO - Fetched 1 consented feedback rows.
+2026-02-18 10:58:15,433 - __main__ - INFO - Email sent to aiden@sharpperformance.com
+2026-02-18 10:58:15,433 - __main__ - INFO - All done. Reports sent to 1 coach(es).
+2026-02-18 10:58:37,857 - __main__ - INFO - TEST MODE — coach: 'Bobby Wade', sending to: aiden@sharpperformance.tech
+2026-02-18 10:58:38,266 - __main__ - INFO - Executing feedback query (week_offset=0, coach=Bobby Wade)…
+2026-02-18 10:58:39,186 - __main__ - INFO - Fetched 1 consented feedback rows.
+2026-02-18 10:58:40,603 - __main__ - INFO - Email sent to aiden@sharpperformance.tech
+2026-02-18 10:58:40,604 - __main__ - INFO - All done. Reports sent to 1 coach(es).
+2026-02-18 11:02:40,820 - __main__ - INFO - TEST MODE — coach: 'Megan O'Connor', sending to: aiden@sharpperformance.tech, weeks_back: 0
+2026-02-18 11:02:41,533 - __main__ - INFO - Executing feedback query (week_offset=0, coach=Megan O'Connor)…
+2026-02-18 11:02:41,876 - __main__ - INFO - Fetched 0 consented feedback rows.
+2026-02-18 11:02:42,106 - __main__ - INFO - No consented feedback found for this week for coach: Megan O'Connor. No emails sent.
+2026-02-18 11:06:11,025 - __main__ - INFO - TEST MODE — coach: 'Megan O'Connor', sending to: aiden@sharpperformance.tech, weeks_back: 0
+2026-02-18 11:06:11,613 - __main__ - INFO - Executing feedback query (week_offset=0, coach=Megan O'Connor)…
+2026-02-18 11:06:12,490 - __main__ - INFO - Fetched 2 consented feedback rows.
+2026-02-18 11:06:13,990 - __main__ - INFO - Email sent to aiden@sharpperformance.tech
+2026-02-18 11:06:13,991 - __main__ - INFO - All done. Reports sent to 1 coach(es).
+2026-02-18 11:06:32,847 - __main__ - INFO - TEST MODE — coach: 'Megan O'Connor', sending to: anna@sharpperformance.tech, weeks_back: 0
+2026-02-18 11:06:33,286 - __main__ - INFO - Executing feedback query (week_offset=0, coach=Megan O'Connor)…
+2026-02-18 11:06:33,539 - __main__ - INFO - Fetched 2 consented feedback rows.
+2026-02-18 11:06:34,955 - __main__ - INFO - Email sent to anna@sharpperformance.tech
+2026-02-18 11:06:34,955 - __main__ - INFO - All done. Reports sent to 1 coach(es).

@@ -43,7 +43,7 @@ def _require_env(name: str) -> str:
 
 SNOWFLAKE_ACCOUNT   = _require_env("SNOWFLAKE_ACCOUNT")    # e.g. xy12345.us-east-1
 SNOWFLAKE_USER      = _require_env("SNOWFLAKE_USER")
-SNOWFLAKE_DATABASE  = os.environ.get("SNOWFLAKE_DATABASE", "ANALYTICS_DEV")
+SNOWFLAKE_DATABASE  = os.environ.get("SNOWFLAKE_DATABASE", "ANALYTICS_PROD")
 SNOWFLAKE_WAREHOUSE = os.environ.get("SNOWFLAKE_WAREHOUSE", "COMPUTE_WH")
 SNOWFLAKE_ROLE      = os.environ.get("SNOWFLAKE_ROLE", "")
 SNOWFLAKE_PRIVATE_KEY_PEM = _require_env("SNOWFLAKE_PRIVATE_KEY_PEM")  # full PEM content as secret
@@ -93,7 +93,7 @@ WITH qa AS (
         f.value:"answer"::string,
         CASE WHEN IS_OBJECT(f.value:"answer") THEN TO_VARCHAR(f.value:"answer") END
       ) AS answer_value
-  FROM ANALYTICS_DEV.RAW__JOTFORM_VIEW.SUBMISSIONS s,
+  FROM ANALYTICS_PROD.RAW__JOTFORM_VIEW.SUBMISSIONS s,
        LATERAL FLATTEN(input => s.ANSWERS) f
 ),
 per_submission AS (
@@ -107,11 +107,11 @@ per_submission AS (
       MAX(IFF(question_name = 'commentsquestions',   answer_value, NULL)) AS comments,
       MAX(IFF(question_name = 'yourFeedback',        answer_value, NULL)) AS consent_raw,
       MAX(IFF(
-        LOWER(question_text) LIKE '%consent to use my testimonial%',
+        LOWER(question_text) LIKE '%%consent to use my testimonial%%',
         answer_value, NULL
       )) AS testimonial_consent_raw,
       MAX(IFF(
-        LOWER(question_text) LIKE '%my coach cares%' OR question_name IN ('myCoach','typeA7'),
+        LOWER(question_text) LIKE '%%my coach cares%%' OR question_name IN ('myCoach','typeA7'),
         TRY_TO_NUMBER(REGEXP_SUBSTR(answer_value, '^[0-9]+')),
         NULL
       )) AS rating
@@ -125,14 +125,14 @@ final AS (
     DATE_TRUNC('WEEK', created_at) AS week_start,
     customer_name,
     coach_name,
-    IFF(consent_raw ILIKE 'Yes%', TRUE, FALSE) AS consent_to_share,
+    IFF(consent_raw ILIKE 'Yes%%', TRUE, FALSE) AS consent_to_share,
     CASE
-      WHEN consent_raw ILIKE 'Yes%' AND LOWER(consent_raw) LIKE '%anonym%' THEN TRUE
-      WHEN consent_raw ILIKE 'Yes%' THEN FALSE
+      WHEN consent_raw ILIKE 'Yes%%' AND LOWER(consent_raw) LIKE '%%anonym%%' THEN TRUE
+      WHEN consent_raw ILIKE 'Yes%%' THEN FALSE
       ELSE NULL
     END AS share_anonymized,
     CASE
-      WHEN consent_raw ILIKE 'Yes%' AND LOWER(consent_raw) LIKE '%anonym%' THEN NULL
+      WHEN consent_raw ILIKE 'Yes%%' AND LOWER(consent_raw) LIKE '%%anonym%%' THEN NULL
       ELSE member_name
     END AS member_name,
     rating,
@@ -145,8 +145,8 @@ SELECT
   f.*,
   d.coach_email
 FROM final f
-JOIN ANALYTICS_DEV.ANALYTICS_CORE.DIM__COACHES d
-  ON f.coach_name = d.coach_name
+JOIN ANALYTICS_PROD.ANALYTICS_CORE.DIM__COACHES d
+  ON LOWER(TRIM(f.coach_name)) = LOWER(TRIM(d.coach_name))
 WHERE f.consent_to_share = TRUE
   AND f.coach_name IS NOT NULL
   AND f.week_start = DATE_TRUNC('WEEK', DATEADD('week', %(week_offset)s, CURRENT_DATE))
@@ -261,6 +261,13 @@ def parse_args():
         metavar="EMAIL",
         help="(Test mode) Email address to send the report to instead of the real coach.",
     )
+    parser.add_argument(
+        "--weeks-back",
+        metavar="N",
+        type=int,
+        default=0,
+        help="(Test mode) How many weeks back to pull feedback from. 0=current week (default), 1=last week, 2=two weeks ago, etc.",
+    )
     return parser.parse_args()
 
 
@@ -272,9 +279,9 @@ if __name__ == "__main__":
             logger.error("--test requires both --coach and --to. Example:\n"
                          "  python main.py --test --coach 'Jane Smith' --to you@example.com")
             sys.exit(1)
-        logger.info(f"TEST MODE — coach: '{args.coach}', sending to: {args.to}")
-        week_offset = 0          # current week
+        week_offset = -args.weeks_back   # 0 = current week, -1 = last week, etc.
         coach_filter = args.coach
+        logger.info(f"TEST MODE — coach: '{args.coach}', sending to: {args.to}, weeks_back: {args.weeks_back}")
     else:
         week_offset = -1         # last week (production default)
         coach_filter = None
@@ -303,7 +310,7 @@ if __name__ == "__main__":
 
             # In test mode, redirect to the override address
             to_email = args.to if args.test else coach_data["coach_email"]
-            to_name  = args.to if args.test else coach_name
+            to_name  = coach_name  # always use the coach's name as display name
 
             send_email(
                 to_email=to_email,
