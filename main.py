@@ -304,7 +304,7 @@ if __name__ == "__main__":
             week_label = coach_data["week_start"].strftime("%b %d, %Y") \
                 if hasattr(coach_data["week_start"], "strftime") \
                 else str(coach_data["week_start"])
-            subject = f"Your Weekly Feedback Summary — Week of {week_label}"
+            subject = f"Your Weekly Member Feedback Summary — Week of {week_label}"
             if args.test:
                 subject = f"[TEST] {subject}"
 
