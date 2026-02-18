@@ -1,41 +1,57 @@
-name: run main.py
+name: Weekly Coach Feedback Reports
 
 on:
   schedule:
-    - cron: '0 0 * * 5' # At 00:00 on Friday
+    # Every Monday at 07:00 UTC — covers the full prior Mon–Sun week
+    - cron: '0 7 * * 1'
+  workflow_dispatch: # allow manual runs from the GitHub UI
 
 jobs:
-  build:
+  send-reports:
     runs-on: ubuntu-latest
+
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: checkout repo content
-        uses: actions/checkout@v2 # checkout the repository content to github runner
-
-      - name: setup python
-        uses: actions/setup-python@v4
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.9' # install the python version needed
-          
-      - name: install python packages
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          
-      - name: execute py script # run main.py
+
+      - name: Run feedback report script
         env:
-          SOME_SECRET: ${{ secrets.SOME_SECRET }}
+          # --- Snowflake (key-pair auth) ---
+          SNOWFLAKE_ACCOUNT:   ${{ secrets.SNOWFLAKE_ACCOUNT }}
+          SNOWFLAKE_USER:      ${{ secrets.SNOWFLAKE_USER }}
+          SNOWFLAKE_PRIVATE_KEY_PEM: ${{ secrets.SNOWFLAKE_PRIVATE_KEY_PEM }}
+          SNOWFLAKE_WAREHOUSE: ${{ vars.SNOWFLAKE_WAREHOUSE }}
+          SNOWFLAKE_ROLE:      ${{ vars.SNOWFLAKE_ROLE }}
+          # --- SMTP ---
+          SMTP_USER:       ${{ secrets.SMTP_USER }}
+          SMTP_PASS:       ${{ secrets.SMTP_PASS }}
+          # Optional overrides (defaults defined in main.py)
+          SMTP_SERVER:     ${{ secrets.SMTP_SERVER }}
+          SMTP_PORT:       ${{ secrets.SMTP_PORT }}
+          EMAIL_FROM:      ${{ secrets.EMAIL_FROM }}
+          EMAIL_FROM_NAME: ${{ secrets.EMAIL_FROM_NAME }}
         run: python main.py
-          
-      - name: commit files
+
+      - name: Commit updated log
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add -A
-          git diff-index --quiet HEAD || (git commit -a -m "updated logs" --allow-empty)
-          
-      - name: push changes
-        uses: ad-m/github-push-action@v0.6.0
+          git add status.log
+          git diff-index --quiet HEAD || git commit -m "chore: update status.log [skip ci]"
+
+      - name: Push log changes
+        uses: ad-m/github-push-action@v0.8.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: main 
+          branch: main

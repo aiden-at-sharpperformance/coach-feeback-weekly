@@ -1,0 +1,10 @@
+# Snowflake connector — brings in its own transitive deps (requests, certifi, etc.)
+snowflake-connector-python==3.12.4
+
+# Key-pair auth (already a transitive dep of snowflake-connector, pinned for clarity)
+cryptography==44.0.1
+
+# HTML email templating
+Jinja2==3.1.5
+
+# SMTP email is Python stdlib — no extra package needed
