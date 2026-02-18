@@ -133,7 +133,10 @@ final AS (
     END AS share_anonymized,
     CASE
       WHEN consent_raw ILIKE 'Yes%%' AND LOWER(consent_raw) LIKE '%%anonym%%' THEN NULL
-      ELSE member_name
+      WHEN member_name IS NOT NULL THEN
+        TRIM(SPLIT_PART(member_name, ' ', 1)) || ' ' ||
+        LEFT(TRIM(SPLIT_PART(member_name, ' ', -1)), 1) || '.'
+      ELSE NULL
     END AS member_name,
     rating,
     comments,
