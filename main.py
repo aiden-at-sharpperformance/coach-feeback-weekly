@@ -1,3 +1,4 @@
+import argparse
 import logging
 import logging.handlers
 import os
@@ -148,24 +149,23 @@ JOIN ANALYTICS_DEV.ANALYTICS_CORE.DIM__COACHES d
   ON f.coach_name = d.coach_name
 WHERE f.consent_to_share = TRUE
   AND f.coach_name IS NOT NULL
-  AND f.week_start = DATE_TRUNC('WEEK', DATEADD('week', -1, CURRENT_DATE))
+  AND f.week_start = DATE_TRUNC('WEEK', DATEADD('week', %(week_offset)s, CURRENT_DATE))
+  AND (%(coach_filter)s IS NULL OR LOWER(f.coach_name) = LOWER(%(coach_filter)s))
 ORDER BY f.created_at DESC
 """
 
 
-def fetch_feedback(conn) -> dict[str, dict]:
+def fetch_feedback(conn, week_offset: int = -1, coach_filter: str | None = None) -> dict[str, dict]:
     """
-    Returns a dict keyed by coach_name, each value being:
-      {
-        "coach_email": str,
-        "week_start": date,
-        "rows": [ { ...column: value... }, ... ]
-      }
+    Returns a dict keyed by coach_name.
+
+    week_offset: -1 = last week (production default), 0 = current week (test mode)
+    coach_filter: if set, only return rows for that coach (case-insensitive)
     """
     cursor = conn.cursor()
     try:
-        logger.info("Executing feedback query…")
-        cursor.execute(FEEDBACK_QUERY)
+        logger.info(f"Executing feedback query (week_offset={week_offset}, coach={coach_filter or 'all'})…")
+        cursor.execute(FEEDBACK_QUERY, {"week_offset": week_offset, "coach_filter": coach_filter})
         columns = [col[0].lower() for col in cursor.description]
         rows = [dict(zip(columns, row)) for row in cursor.fetchall()]
         logger.info(f"Fetched {len(rows)} consented feedback rows.")
@@ -244,15 +244,50 @@ def send_email(to_email: str, to_name: str, subject: str, html_body: str):
 # ---------------------------------------------------------------------------
 # Entrypoint
 # ---------------------------------------------------------------------------
+def parse_args():
+    parser = argparse.ArgumentParser(description="Send weekly coach feedback reports.")
+    parser.add_argument(
+        "--test",
+        action="store_true",
+        help="Test mode: query the current week and send to a single override address.",
+    )
+    parser.add_argument(
+        "--coach",
+        metavar="NAME",
+        help="(Test mode) Coach name to pull the report for (case-insensitive).",
+    )
+    parser.add_argument(
+        "--to",
+        metavar="EMAIL",
+        help="(Test mode) Email address to send the report to instead of the real coach.",
+    )
+    return parser.parse_args()
+
+
 if __name__ == "__main__":
+    args = parse_args()
+
+    if args.test:
+        if not args.coach or not args.to:
+            logger.error("--test requires both --coach and --to. Example:\n"
+                         "  python main.py --test --coach 'Jane Smith' --to you@example.com")
+            sys.exit(1)
+        logger.info(f"TEST MODE — coach: '{args.coach}', sending to: {args.to}")
+        week_offset = 0          # current week
+        coach_filter = args.coach
+    else:
+        week_offset = -1         # last week (production default)
+        coach_filter = None
+
     conn = get_snowflake_connection()
     try:
-        coaches = fetch_feedback(conn)
+        coaches = fetch_feedback(conn, week_offset=week_offset, coach_filter=coach_filter)
     finally:
         conn.close()
 
     if not coaches:
-        logger.info("No consented feedback found for last week. No emails sent.")
+        period = "this week" if args.test else "last week"
+        logger.info(f"No consented feedback found for {period}{' for coach: ' + args.coach if args.test else ''}. No emails sent.")
         sys.exit(0)
 
     errors = []
@@ -263,9 +298,16 @@ if __name__ == "__main__":
                 if hasattr(coach_data["week_start"], "strftime") \
                 else str(coach_data["week_start"])
             subject = f"Your Weekly Feedback Summary — Week of {week_label}"
+            if args.test:
+                subject = f"[TEST] {subject}"
+
+            # In test mode, redirect to the override address
+            to_email = args.to if args.test else coach_data["coach_email"]
+            to_name  = args.to if args.test else coach_name
+
             send_email(
-                to_email=coach_data["coach_email"],
-                to_name=coach_name,
+                to_email=to_email,
+                to_name=to_name,
                 subject=subject,
                 html_body=html,
             )
