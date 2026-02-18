@@ -43,15 +43,14 @@ jobs:
           EMAIL_FROM_NAME: ${{ secrets.EMAIL_FROM_NAME }}
         run: python main.py
 
-      - name: Commit updated log
+      - name: Commit and push updated log
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add status.log
-          git diff-index --quiet HEAD || git commit -m "chore: update status.log [skip ci]"
-
-      - name: Push log changes
-        uses: ad-m/github-push-action@v0.8.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: main
+          if git diff-index --quiet HEAD; then
+            echo "No log changes to commit."
+          else
+            git commit -m "chore: update status.log [skip ci]"
+            git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:main
+          fi
