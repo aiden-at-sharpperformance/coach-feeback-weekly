@@ -48,12 +48,12 @@ SNOWFLAKE_WAREHOUSE = os.environ.get("SNOWFLAKE_WAREHOUSE", "COMPUTE_WH")
 SNOWFLAKE_ROLE      = os.environ.get("SNOWFLAKE_ROLE", "")
 SNOWFLAKE_PRIVATE_KEY_PEM = _require_env("SNOWFLAKE_PRIVATE_KEY_PEM")  # full PEM content as secret
 
-SMTP_SERVER   = os.environ.get("SMTP_SERVER", "smtp.gmail.com")
-SMTP_PORT     = int(os.environ.get("SMTP_PORT", "587"))
+SMTP_SERVER   = os.environ.get("SMTP_SERVER") or "smtp.gmail.com"
+SMTP_PORT     = int(os.environ.get("SMTP_PORT") or "587")
 SMTP_USER     = _require_env("SMTP_USER")       # e.g. reports@yourorg.com
 SMTP_PASS     = _require_env("SMTP_PASS")       # app password
-EMAIL_FROM    = os.environ.get("EMAIL_FROM", "")  # defaults to SMTP_USER if blank
-EMAIL_FROM_NAME = os.environ.get("EMAIL_FROM_NAME", "Coaching Team")
+EMAIL_FROM      = os.environ.get("EMAIL_FROM") or ""  # defaults to SMTP_USER if blank
+EMAIL_FROM_NAME = os.environ.get("EMAIL_FROM_NAME") or "Coaching Team"
 
 
 # ---------------------------------------------------------------------------
