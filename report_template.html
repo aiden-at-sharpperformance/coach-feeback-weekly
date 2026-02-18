@@ -3,32 +3,34 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Weekly Feedback Report</title>
+  <title>Weekly Coach Feedback Report</title>
 </head>
-<body style="margin:0;padding:0;background:#f4f6f9;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#1a1a2e;">
+<body style="margin:0;padding:0;background:#1a1a1a;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#f0f0f0;">
 
   <!-- Outer wrapper -->
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4f6f9;padding:32px 16px;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#1a1a1a;padding:32px 16px;">
     <tr>
       <td align="center">
 
         <!-- Card -->
         <table role="presentation" width="620" cellpadding="0" cellspacing="0"
-               style="max-width:620px;width:100%;background:#ffffff;border-radius:12px;
-                      box-shadow:0 4px 24px rgba(0,0,0,0.08);overflow:hidden;">
+               style="max-width:620px;width:100%;background:#242424;border-radius:12px;
+                      overflow:hidden;border:1px solid #333333;">
 
           <!-- Header -->
           <tr>
-            <td style="background:linear-gradient(135deg,#4f46e5 0%,#7c3aed 100%);
-                        padding:36px 40px 28px;text-align:center;">
-              <p style="margin:0 0 6px;font-size:13px;font-weight:600;letter-spacing:2px;
-                         color:rgba(255,255,255,0.75);text-transform:uppercase;">
+            <td style="background:#1a1a1a;padding:36px 40px 32px;text-align:center;border-bottom:1px solid #333;">
+              <!-- Logo -->
+              <img src="https://hs-23876111.f.hubspotemail.net/hub/23876111/hubfs/Color=White%2c%20Size=80px%2c%20Type=Full%20(2%20Lines)%20copy.png?width=760&upscale=true&name=Color=White%2c%20Size=80px%2c%20Type=Full%20(2%20Lines)%20copy.png"
+                   alt="Sharp Performance" width="180" style="display:block;margin:0 auto 24px;max-width:180px;" />
+              <p style="margin:0 0 6px;font-size:11px;font-weight:600;letter-spacing:3px;
+                         color:#c9a84c;text-transform:uppercase;">
                 Weekly Feedback Report
               </p>
-              <h1 style="margin:0 0 8px;font-size:28px;font-weight:700;color:#ffffff;line-height:1.2;">
-                Hi, {{ coach_name }}! 👋
+              <h1 style="margin:0 0 8px;font-size:26px;font-weight:700;color:#ffffff;line-height:1.2;">
+                Hi, {{ coach_name.split()[0] }}!
               </h1>
-              <p style="margin:0;font-size:15px;color:rgba(255,255,255,0.85);">
+              <p style="margin:0;font-size:14px;color:#888888;">
                 Week of {{ week_start }}
               </p>
             </td>
@@ -36,22 +38,22 @@
 
           <!-- Summary stats bar -->
           <tr>
-            <td style="background:#f8f7ff;padding:24px 40px;border-bottom:1px solid #e8e4ff;">
+            <td style="padding:24px 40px;border-bottom:1px solid #333333;">
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
                 <tr>
 
                   <!-- Total responses -->
                   <td align="center" style="width:50%;padding:0 8px 0 0;">
                     <table role="presentation" cellpadding="0" cellspacing="0"
-                           style="background:#ffffff;border:1px solid #e0dbff;border-radius:10px;
-                                  width:100%;padding:18px 12px;">
+                           style="background:#2e2e2e;border:1px solid #3a3a3a;border-radius:10px;
+                                  width:100%;padding:20px 12px;">
                       <tr>
                         <td align="center">
-                          <p style="margin:0 0 4px;font-size:30px;font-weight:700;color:#4f46e5;">
+                          <p style="margin:0 0 4px;font-size:32px;font-weight:700;color:#c9a84c;">
                             {{ total_responses }}
                           </p>
-                          <p style="margin:0;font-size:12px;font-weight:600;color:#6b7280;
-                                     letter-spacing:1px;text-transform:uppercase;">
+                          <p style="margin:0;font-size:11px;font-weight:600;color:#888888;
+                                     letter-spacing:2px;text-transform:uppercase;">
                             Responses
                           </p>
                         </td>
@@ -62,19 +64,19 @@
                   <!-- Average rating -->
                   <td align="center" style="width:50%;padding:0 0 0 8px;">
                     <table role="presentation" cellpadding="0" cellspacing="0"
-                           style="background:#ffffff;border:1px solid #e0dbff;border-radius:10px;
-                                  width:100%;padding:18px 12px;">
+                           style="background:#2e2e2e;border:1px solid #3a3a3a;border-radius:10px;
+                                  width:100%;padding:20px 12px;">
                       <tr>
                         <td align="center">
                           {% if avg_rating is not none %}
-                          <p style="margin:0 0 4px;font-size:30px;font-weight:700;color:#4f46e5;">
-                            {{ avg_rating }} <span style="font-size:16px;color:#9ca3af;">/ {{ max_rating }}</span>
+                          <p style="margin:0 0 4px;font-size:32px;font-weight:700;color:#c9a84c;">
+                            {{ avg_rating }}<span style="font-size:16px;color:#666666;"> / {{ max_rating }}</span>
                           </p>
                           {% else %}
-                          <p style="margin:0 0 4px;font-size:24px;font-weight:700;color:#9ca3af;">—</p>
+                          <p style="margin:0 0 4px;font-size:28px;font-weight:700;color:#555555;">—</p>
                           {% endif %}
-                          <p style="margin:0;font-size:12px;font-weight:600;color:#6b7280;
-                                     letter-spacing:1px;text-transform:uppercase;">
+                          <p style="margin:0;font-size:11px;font-weight:600;color:#888888;
+                                     letter-spacing:2px;text-transform:uppercase;">
                             Avg Rating
                           </p>
                         </td>
@@ -89,40 +91,40 @@
 
           <!-- Feedback cards -->
           <tr>
-            <td style="padding:32px 40px 8px;">
-              <h2 style="margin:0 0 20px;font-size:16px;font-weight:700;color:#1a1a2e;
-                          letter-spacing:0.5px;text-transform:uppercase;">
+            <td style="padding:28px 40px 8px;">
+              <p style="margin:0 0 20px;font-size:11px;font-weight:600;color:#c9a84c;
+                          letter-spacing:3px;text-transform:uppercase;">
                 Individual Feedback
-              </h2>
+              </p>
 
               {% for row in feedback_rows %}
               <!-- Feedback card -->
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0"
-                     style="margin-bottom:20px;border:1px solid #e5e7eb;border-radius:10px;
-                            overflow:hidden;border-left:4px solid
-                            {% if row.rating is not none and row.rating >= 4 %}#22c55e
-                            {% elif row.rating is not none and row.rating == 3 %}#f59e0b
-                            {% elif row.rating is not none %}#ef4444
-                            {% else %}#4f46e5{% endif %};">
+                     style="margin-bottom:16px;background:#2e2e2e;border:1px solid #3a3a3a;
+                            border-radius:10px;overflow:hidden;border-left:3px solid
+                            {% if row.rating is not none and row.rating >= 4 %}#4ade80
+                            {% elif row.rating is not none and row.rating == 3 %}#c9a84c
+                            {% elif row.rating is not none %}#f87171
+                            {% else %}#c9a84c{% endif %};">
 
-                <!-- Card header row -->
+                <!-- Card header -->
                 <tr>
-                  <td style="background:#fafafa;padding:14px 18px;border-bottom:1px solid #e5e7eb;">
+                  <td style="padding:14px 18px 10px;border-bottom:1px solid #3a3a3a;">
                     <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
                       <tr>
                         <!-- Member / anonymous label -->
                         <td>
                           {% if row.share_anonymized %}
-                          <span style="font-size:13px;font-weight:600;color:#6b7280;font-style:italic;">
+                          <span style="font-size:13px;font-weight:600;color:#888888;font-style:italic;">
                             Anonymous Member
                           </span>
                           {% else %}
-                          <span style="font-size:13px;font-weight:600;color:#1a1a2e;">
+                          <span style="font-size:13px;font-weight:600;color:#f0f0f0;">
                             {{ row.member_name or "Member" }}
                           </span>
                           {% endif %}
                           {% if row.customer_name %}
-                          <span style="font-size:12px;color:#9ca3af;"> &mdash; {{ row.customer_name }}</span>
+                          <span style="font-size:12px;color:#666666;"> &mdash; {{ row.customer_name }}</span>
                           {% endif %}
                         </td>
                         <!-- Rating badge -->
@@ -130,9 +132,9 @@
                           {% if row.rating is not none %}
                           <span style="display:inline-block;padding:3px 10px;border-radius:20px;
                                         font-size:12px;font-weight:700;
-                                        {% if row.rating >= 4 %}background:#dcfce7;color:#15803d;
-                                        {% elif row.rating == 3 %}background:#fef3c7;color:#b45309;
-                                        {% else %}background:#fee2e2;color:#b91c1c;{% endif %}">
+                                        {% if row.rating >= 4 %}background:#14532d;color:#4ade80;
+                                        {% elif row.rating == 3 %}background:#3a2e00;color:#c9a84c;
+                                        {% else %}background:#450a0a;color:#f87171;{% endif %}">
                             ★ {{ row.rating }} / {{ max_rating }}
                           </span>
                           {% endif %}
@@ -144,13 +146,13 @@
 
                 <!-- Comment body -->
                 <tr>
-                  <td style="padding:16px 18px;">
+                  <td style="padding:14px 18px;">
                     {% if row.comments %}
-                    <p style="margin:0;font-size:14px;line-height:1.65;color:#374151;">
+                    <p style="margin:0;font-size:14px;line-height:1.7;color:#cccccc;">
                       &ldquo;{{ row.comments }}&rdquo;
                     </p>
                     {% else %}
-                    <p style="margin:0;font-size:14px;color:#9ca3af;font-style:italic;">
+                    <p style="margin:0;font-size:14px;color:#555555;font-style:italic;">
                       No written comment provided.
                     </p>
                     {% endif %}
@@ -159,8 +161,8 @@
 
                 <!-- Card footer: date -->
                 <tr>
-                  <td style="padding:8px 18px 12px;">
-                    <p style="margin:0;font-size:11px;color:#9ca3af;">
+                  <td style="padding:6px 18px 12px;">
+                    <p style="margin:0;font-size:11px;color:#555555;">
                       Submitted {{ row.created_at.strftime('%b %d, %Y') if row.created_at and row.created_at.strftime is defined else row.created_at }}
                     </p>
                   </td>
@@ -173,16 +175,17 @@
           </tr>
 
           <!-- Spacer -->
-          <tr><td style="height:16px;"></td></tr>
+          <tr><td style="height:20px;"></td></tr>
 
           <!-- Footer -->
           <tr>
-            <td style="background:#f8f7ff;padding:24px 40px;border-top:1px solid #e8e4ff;
-                        text-align:center;">
-              <p style="margin:0 0 6px;font-size:12px;color:#9ca3af;">
-                This report was generated automatically on {{ generated_at }}.
+            <td style="background:#1a1a1a;padding:24px 40px;border-top:1px solid #333333;text-align:center;">
+              <img src="https://hs-23876111.f.hubspotemail.net/hub/23876111/hubfs/Color=White%2c%20Size=80px%2c%20Type=Full%20(2%20Lines)%20copy.png?width=760&upscale=true&name=Color=White%2c%20Size=80px%2c%20Type=Full%20(2%20Lines)%20copy.png"
+                   alt="Sharp Performance" width="100" style="display:block;margin:0 auto 16px;max-width:100px;opacity:0.5;" />
+              <p style="margin:0 0 4px;font-size:11px;color:#555555;">
+                Generated automatically on {{ generated_at }}.
               </p>
-              <p style="margin:0;font-size:12px;color:#9ca3af;">
+              <p style="margin:0;font-size:11px;color:#555555;">
                 Only feedback where members consented to share with their coach is included.
               </p>
             </td>
