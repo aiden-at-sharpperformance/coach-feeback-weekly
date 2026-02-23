@@ -104,3 +104,19 @@ smtplib.SMTPRecipientsRefused: {'': (555, b'5.5.2 Syntax error, cannot decode re
 2026-02-21 00:18:17,468 - __main__ - INFO - Email sent to mike.mayo@sharpperformance.tech
 2026-02-21 00:18:18,194 - __main__ - INFO - Email sent to mike.ishii@sharpperformance.tech
 2026-02-21 00:18:18,194 - __main__ - INFO - All done. Reports sent to 15 coach(es).
+2026-02-23 07:56:56,039 - __main__ - INFO - Executing feedback query (week_offset=-1, coach=all)…
+2026-02-23 07:56:57,571 - __main__ - INFO - Fetched 17 consented feedback rows.
+2026-02-23 07:56:59,118 - __main__ - INFO - Email sent to mike.ishii@sharpperformance.tech
+2026-02-23 07:56:59,855 - __main__ - INFO - Email sent to chanda.cabin@sharpperformance.tech
+2026-02-23 07:57:00,621 - __main__ - INFO - Email sent to ben.durbin@sharpperformance.tech
+2026-02-23 07:57:01,424 - __main__ - INFO - Email sent to jared.cheselske@sharpperformance.tech
+2026-02-23 07:57:02,249 - __main__ - INFO - Email sent to dave.mayo@sharpperformance.tech
+2026-02-23 07:57:03,258 - __main__ - INFO - Email sent to brendan@sharpperformance.tech
+2026-02-23 07:57:03,933 - __main__ - INFO - Email sent to derrick.riggs@sharpperformance.tech
+2026-02-23 07:57:04,643 - __main__ - INFO - Email sent to alistair.sweeney@sharpperformance.tech
+2026-02-23 07:57:05,632 - __main__ - INFO - Email sent to josh.hollingsworth@sharpperformance.tech
+2026-02-23 07:57:06,535 - __main__ - INFO - Email sent to marcy.hehnly@sharpperformance.tech
+2026-02-23 07:57:07,329 - __main__ - INFO - Email sent to megan.oconnor@sharpperformance.tech
+2026-02-23 07:57:08,198 - __main__ - INFO - Email sent to peter.logan@sharpperformance.tech
+2026-02-23 07:57:09,276 - __main__ - INFO - Email sent to bobby.wade@sharpperformance.tech
+2026-02-23 07:57:09,276 - __main__ - INFO - All done. Reports sent to 13 coach(es).
